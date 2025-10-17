@@ -1,5 +1,6 @@
 import { Page, expect } from "@playwright/test";
 import HomePage from "./HomePage";
+import logger from "../utils/LoggerUtil";
 
 
 export default class LoginPage {
@@ -8,7 +9,7 @@ export default class LoginPage {
     "#username",
     'input[name="username"]',
     ".username",
-    "//*[@id='username]",
+    "//*[@id='username']",
   ];
   private readonly passwordInputSelector = "#password";
   private readonly loginButtonSelector = "#Login";
@@ -24,26 +25,32 @@ export default class LoginPage {
 
   async navigateToLoginPage() {
     await this.page.goto("https://login.salesforce.com");
+    logger.info("Navigated to Login Page");
   }
 
   async fillUsername(username: string) {
     await this.page.locator(this.usernameInputSelector).fill(username);
+    logger.info(`Filled username: ${username}`);
   }
 
   
 
   async fillPassword(password: string) {
     await this.page.locator(this.passwordInputSelector).fill(password);
+    logger.info(`Filled password: ********`);
   }
 
   async clickLoginButton() {
-    await this.page
-      .locator(this.loginButtonSelector)
-      .click()
-      .catch((error) => {
-        throw error; // rethrow the error if needed
-      });
-      
+    // Click and wait for navigation to ensure we're on the home page
+    await Promise.all([
+      this.page.waitForNavigation({ waitUntil: 'load', timeout: 30000 }),
+      this.page.locator(this.loginButtonSelector).click().catch((error) => {
+        logger.error(`Error clicking Login button: ${error}`);
+        throw error;
+      }),
+    ]);
+
+    logger.info("Clicked login and navigation finished");
 
     const homePage = new HomePage(this.page);
     return homePage;

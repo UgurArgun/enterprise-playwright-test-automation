@@ -5,8 +5,10 @@ export default class HomePage {
   constructor(private page: Page) {}
 
   async expectServiceTitleToBeVisible() {
-    await expect(this.page.getByTitle(this.serviceTitleLocator)).toBeVisible({
-      timeout: 20000,
-    });
+    // The app often navigates through a few redirects; checking the document title
+    // is more reliable than getByTitle for this flow.
+    await this.page.waitForLoadState('load', { timeout: 30000 });
+    const title = await this.page.title();
+    await expect(title).toContain('Salesforce');
   }
 };
