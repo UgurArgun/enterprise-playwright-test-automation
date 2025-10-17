@@ -2,7 +2,6 @@ import { Page, expect } from "@playwright/test";
 import HomePage from "./HomePage";
 import logger from "../utils/LoggerUtil";
 
-
 export default class LoginPage {
   private readonly usernameInputSelector = "#username";
   private readonly usernameInputSelectors = [
@@ -33,8 +32,6 @@ export default class LoginPage {
     logger.info(`Filled username: ${username}`);
   }
 
-  
-
   async fillPassword(password: string) {
     await this.page.locator(this.passwordInputSelector).fill(password);
     logger.info(`Filled password: ********`);
@@ -43,11 +40,14 @@ export default class LoginPage {
   async clickLoginButton() {
     // Click and wait for navigation to ensure we're on the home page
     await Promise.all([
-      this.page.waitForNavigation({ waitUntil: 'load', timeout: 30000 }),
-      this.page.locator(this.loginButtonSelector).click().catch((error) => {
-        logger.error(`Error clicking Login button: ${error}`);
-        throw error;
-      }),
+      this.page.waitForNavigation({ waitUntil: "load", timeout: 30000 }),
+      this.page
+        .locator(this.loginButtonSelector)
+        .click()
+        .catch((error) => {
+          logger.error(`Error clicking Login button: ${error}`);
+          throw error;
+        }),
     ]);
 
     logger.info("Clicked login and navigation finished");
