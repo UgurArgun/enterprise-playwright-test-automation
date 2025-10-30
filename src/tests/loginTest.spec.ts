@@ -1,19 +1,18 @@
 import {test} from "@playwright/test";
 import LoginPage from "../pages/LoginPage";
 
-test("test login to salesforce", async ({page}) => {
+test("test login to Cogmento CRM", async ({page}) => {
   const loginPage = new LoginPage(page);
 
   await loginPage.navigateToLoginPage();
-  //await loginPage.fillUsername("sarpercaglayan16-sud1@force.com");
-  //await loginPage.fillPassword("Ua952098!");
+  //await loginPage.fillUsername("sarpercaglayan16@gmail.com");
+  //await loginPage.fillPassword("Jale2013");
 
   await loginPage.fillUsername(process.env.userId!);
   await loginPage.fillPassword(process.env.password!);
 
   const homePage = await loginPage.clickLoginButton();
-  await homePage.expectServiceTitleToBeVisible();   
-
+  await homePage.expectServiceTitleToBeVisible();
 });
 
 test("sample env test", async ({page}) => {

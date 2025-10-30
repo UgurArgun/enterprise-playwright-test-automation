@@ -3,15 +3,13 @@ import HomePage from "./HomePage";
 import logger from "../utils/LoggerUtil";
 
 export default class LoginPage {
-  private readonly usernameInputSelector = "#username";
+  private readonly usernameInputSelector = "input[name='email']";
   private readonly usernameInputSelectors = [
-    "#username",
-    'input[name="username"]',
-    ".username",
-    "//*[@id='username']",
+    "input[placeholder='Email']",
+    "input[name='email']",
   ];
-  private readonly passwordInputSelector = "#password";
-  private readonly loginButtonSelector = "#Login";
+  private readonly passwordInputSelector = "input[name='password']";
+  private readonly loginButtonSelector = ".ui.fluid.large.blue.submit.button";
 
   constructor(private page: Page) {}
 
@@ -23,7 +21,7 @@ export default class LoginPage {
   }
 
   async navigateToLoginPage() {
-    await this.page.goto("https://login.salesforce.com");
+    await this.page.goto("https://ui.cogmento.com");
     logger.info("Navigated to Login Page");
   }
 
@@ -40,7 +38,10 @@ export default class LoginPage {
   async clickLoginButton() {
     // Click and wait for navigation to ensure we're on the home page
     await Promise.all([
-      this.page.waitForNavigation({ waitUntil: "load", timeout: 30000 }),
+      this.page
+        .locator("text=Contacts")
+        .first()
+        .waitFor({ state: "visible", timeout: 15000 }),
       this.page
         .locator(this.loginButtonSelector)
         .click()
