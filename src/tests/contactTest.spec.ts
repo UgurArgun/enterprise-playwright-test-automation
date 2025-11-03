@@ -32,7 +32,7 @@ for (const contact of cdata) {
   });
 } 
 
-test.skip("simple DD test", async ({ page }) => {
+test("simple DD test", async ({ page }) => {
   logger.info("Test for Contact Creation is started...");
   const fname = "Esra";
   const lname = "Abdullah";
@@ -64,7 +64,7 @@ test.skip("demo faker", async () => {
   console.log(await getDemoOutput());
 });
 
-test("Faker", async ({ page }) => {
+test.skip("Faker", async ({ page }) => {
   // Generate test data
   const testData = await generateTestData(20);
 

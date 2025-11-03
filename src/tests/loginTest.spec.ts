@@ -24,7 +24,7 @@ test("sample env test", async ({page}) => {
 
   import { encryptEnvFile } from "../utils/EncryptEnvFile";
   import { decrypt, encrypt } from "../utils/CryptojsUtil";
- test("Sample env test", async ({ }) => {
+ test.skip("Sample env test", async ({ }) => {
     const plaintext = 'Hello, Mars!';
     const encryptedText = encrypt("myplaywright909");
     console.log('SALT:', process.env.SALT);
