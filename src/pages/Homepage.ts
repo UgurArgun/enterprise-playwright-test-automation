@@ -4,7 +4,6 @@ import ContactPage from "./ContactPage";
 
 
 export default class HomePage {
-  private readonly serviceTitleLocator = "Aloitus | Salesforce";
   private readonly contactsLinkLocator = "Contacts";
 
   constructor(private page: Page) {}
