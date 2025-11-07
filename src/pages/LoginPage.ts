@@ -37,19 +37,17 @@ export default class LoginPage {
 
   async clickLoginButton() {
     // Click and wait for navigation to ensure we're on the home page
-    await Promise.all([
-      this.page
-        .locator("text=Contacts")
-        .first()
-        .waitFor({ state: "visible", timeout: 15000 }),
-      this.page
-        .locator(this.loginButtonSelector)
-        .click()
-        .catch((error) => {
-          logger.error(`Error clicking Login button: ${error}`);
-          throw error;
-        }),
-    ]);
+      // Wait for the login form and button to be visible
+  await expect(this.page.locator('form')).toBeVisible({ timeout: 10000 });
+  const loginButton = this.page.locator('div.ui.fluid.large.blue.submit.button', { hasText: 'Login' });
+  await expect(loginButton).toBeVisible({ timeout: 10000 });
+  await loginButton.click();
+
+      // Wait for dashboard or contacts link
+      await Promise.race([
+        this.page.waitForURL(/(home|dashboard|contacts)/, { timeout: 20000 }),
+        this.page.getByRole('link', { name: /Contacts/i }).waitFor({ state: "visible", timeout: 20000 }),
+      ]);
 
     logger.info("Clicked login and navigation finished");
 
