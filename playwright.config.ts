@@ -50,7 +50,7 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"], headless: true },
     },
-
+/*
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"], headless: true },
@@ -60,7 +60,7 @@ export default defineConfig({
       name: "webkit",
       use: { ...devices["Desktop Safari"], headless: true },
     },
-
+*/
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',

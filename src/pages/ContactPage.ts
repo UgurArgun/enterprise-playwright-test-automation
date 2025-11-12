@@ -7,7 +7,7 @@ export default class ContactPage {
   private readonly firstNameTextFieldLocator = "input[name='first_name']";
   private readonly lastNameTextFieldLocator = "input[name='last_name']";
   private readonly saveButtonLocator = "Save";
-  private readonly searchBoxLocator = "Search this list...";
+  private readonly searchBoxLocator = "Search";
   private readonly contactFullNameLabelLocator = "span.selectable ";
   private readonly contactDisplayNameLocator = "#brandBand_2";
 
