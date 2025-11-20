@@ -36,24 +36,19 @@ test("API test with new context", async ({ playwright }) => {
   const apirequest = playwright.request;
 
   const newcontext = await apirequest.newContext({
-    baseURL: "https://cat-fact.herokuapp.com",
+    baseURL: "https://catfact.ninja",
   });
 
   const apiResponse = await newcontext.get("/facts/");
   expect(apiResponse.ok()).toBe(true);
   const apiResponseJson = await apiResponse.json();
-  for (const obj of apiResponseJson) {
-    expect(obj).toHaveProperty("status");
-    expect(obj).toHaveProperty("_id");
-
-    expect(obj.status).toHaveProperty("verified");
-    expect(obj.status).toHaveProperty("sentCount");
-
-    expect(obj.status.verified).toBe(true);
-    expect(obj._id).toMatch(/^\w{24}$/);
-    expect(obj.user).toMatch(/^\w{24}$/);
-    expect(obj.text).toContain("cat");
-    expect(obj.source).toBe("user");
-    expect(obj.deleted).toBe(false);
+  // The response is an object with a 'data' array
+  expect(Array.isArray(apiResponseJson.data)).toBe(true);
+  for (const obj of apiResponseJson.data) {
+    expect(obj).toHaveProperty("fact");
+    expect(obj).toHaveProperty("length");
+    expect(typeof obj.fact).toBe("string");
+    expect(typeof obj.length).toBe("number");
+    expect(obj.fact.toLowerCase()).toContain("cat");
   }
 });

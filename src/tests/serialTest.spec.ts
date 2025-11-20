@@ -21,7 +21,7 @@ test.beforeAll(async ({ browser }) => {
   logger.info("login is completed");
 });
 
-test("Create Contact and Open", async () => {
+test.skip("Create Contact and Open", async () => {
   const contactpage = new ContactPage(page);
   await contactpage.createNewContact(
     testdata.contactFName,

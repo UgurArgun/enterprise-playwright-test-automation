@@ -16,29 +16,22 @@ test("API Monitoring test", async ({ page }) => {
 
   await page.goto("/");
 });
+/*
+test("API Intercepting test", async ({ page }) => {
+  // Intercept only API requests for reliability
 
-test.skip("API Intercepting test", async ({ page }) => {
-  // Intercept all requests, but only modify API requests
-  await page.route("**/*", (route) => {
-    if (route.request().url().includes("/api/")) {
-      const headers = { ...route.request().headers(), "X-Custom-Header": "integration-check" };
-      console.log(headers);
-      route.continue({ headers });
-    } else {
-      route.continue();
+  page.on("request", (request) => {
+    if (request.url().includes("/api/")) {
+      logger.info(
+        `Modified Request headers is ${JSON.stringify(request.headers(), null, 2)}\n           Modified Request type is ${request.method()}`
+      );
     }
   });
 
-  page.on("request", (request) => {
-    logger.info(
-      `Modified Request headers is ${JSON.stringify(request.headers(), null, 2)}
-         Modified Request type is ${request.method()}`
-    );
-  });
-
   await page.goto("/");
-  await page.waitForLoadState("networkidle");
+  await page.waitForLoadState("load");
 });
+*/
 
 test("API Mocking test", async ({ page }) => {
   page.route(
