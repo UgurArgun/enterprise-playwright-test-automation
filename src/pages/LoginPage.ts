@@ -1,6 +1,7 @@
 import { Page, expect } from "@playwright/test";
 import HomePage from "./HomePage";
 import logger from "../utils/LoggerUtil";
+import findValidElement from "../utils/SelfHealingUtil";
 
 export default class LoginPage {
   private readonly usernameInputSelector = "input[name='email']";
@@ -30,6 +31,15 @@ export default class LoginPage {
     logger.info(`Filled username: ${username}`);
   }
 
+  async fillUsername_selfheal(username: string) {
+    let usernameInputLocator = await findValidElement(
+      this.page,
+      this.usernameInputSelectors
+    );
+    await usernameInputLocator?.fill(username);
+    const enteredValue = await usernameInputLocator?.inputValue();
+    expect(enteredValue).toBe(username);
+  }
   async fillPassword(password: string) {
     await this.page.locator(this.passwordInputSelector).fill(password);
     logger.info(`Filled password: ********`);
@@ -37,17 +47,22 @@ export default class LoginPage {
 
   async clickLoginButton() {
     // Click and wait for navigation to ensure we're on the home page
-      // Wait for the login form and button to be visible
-  await expect(this.page.locator('form')).toBeVisible({ timeout: 10000 });
-  const loginButton = this.page.locator('div.ui.fluid.large.blue.submit.button', { hasText: 'Login' });
-  await expect(loginButton).toBeVisible({ timeout: 10000 });
-  await loginButton.click();
+    // Wait for the login form and button to be visible
+    await expect(this.page.locator("form")).toBeVisible({ timeout: 10000 });
+    const loginButton = this.page.locator(
+      "div.ui.fluid.large.blue.submit.button",
+      { hasText: "Login" }
+    );
+    await expect(loginButton).toBeVisible({ timeout: 10000 });
+    await loginButton.click();
 
-      // Wait for dashboard or contacts link
-      await Promise.race([
-        this.page.waitForURL(/(home|dashboard|contacts)/, { timeout: 20000 }),
-        this.page.getByRole('link', { name: /Contacts/i }).waitFor({ state: "visible", timeout: 20000 }),
-      ]);
+    // Wait for dashboard or contacts link
+    await Promise.race([
+      this.page.waitForURL(/(home|dashboard|contacts)/, { timeout: 20000 }),
+      this.page
+        .getByRole("link", { name: /Contacts/i })
+        .waitFor({ state: "visible", timeout: 20000 }),
+    ]);
 
     logger.info("Clicked login and navigation finished");
 

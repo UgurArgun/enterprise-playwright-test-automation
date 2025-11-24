@@ -47,3 +47,9 @@ test.skip("Login with auth file", async ({ browser }) => {
   await page.goto("https://ui.cogmento.com/home");
   await expect(page.getByRole("link", { name: "Contacts" })).toBeVisible();
 });
+
+test("simple login test with self heal", async ({ page }) => {
+  const loginPage = new LoginPage(page);
+  await loginPage.navigateToLoginPage();
+  await loginPage.fillUsername_selfheal("demo_selfheal");
+});
